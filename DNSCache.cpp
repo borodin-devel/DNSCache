@@ -20,7 +20,7 @@ void DNSCache::update(const std::string& name, const std::string& ip) {
             m_lru_cache.pop_back();
         }
         m_lru_cache.push_front({ name, ip });
-        m_hash_cache[name] = m_lru_cache.begin();
+        m_hash_cache[m_lru_cache.begin()->domain] = m_lru_cache.begin();
     }
 }
 

@@ -7,6 +7,7 @@
 #include <mutex>
 #include <shared_mutex>
 #include <string>
+#include <string_view>
 #include <unordered_map>
 #include <memory>
 
@@ -38,7 +39,7 @@ private:
     std::list<DomainInfo> m_lru_cache; // To track least recently used and stable iterators
 
     using DomainInfoListIter = std::list<DomainInfo>::iterator;
-    std::unordered_map<std::string, DomainInfoListIter> m_hash_cache;
+    std::unordered_map<std::string_view, DomainInfoListIter> m_hash_cache;
 };
 
 class DNSCacheSingleton {
