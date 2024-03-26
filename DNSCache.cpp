@@ -19,8 +19,20 @@ void DNSCache::update(const std::string& name, const std::string& ip) {
             m_hash_cache.erase(m_lru_cache.back().domain);
             m_lru_cache.pop_back();
         }
-        m_lru_cache.push_front({ name, ip });
-        m_hash_cache[m_lru_cache.begin()->domain] = m_lru_cache.begin();
+
+        bool fallback = false;
+        try {
+            m_lru_cache.push_front({ name, ip });
+            fallback = true;
+            m_hash_cache[m_lru_cache.begin()->domain] = m_lru_cache.begin();
+        }
+        catch (std::exception& ex) {
+            std::cout << "Caught exception: " << ex.what() << '\n';
+            if (fallback) {
+                std::cout << "Rolling back LRU cache\n";
+                m_lru_cache.pop_front();
+            }
+        }
     }
 }
 
